@@ -1,5 +1,5 @@
 package com.noob.design.factory.abstractfactory;
 
-public interface abstractfactory {
-
+public interface IBanana {
+    public void eat();
 }

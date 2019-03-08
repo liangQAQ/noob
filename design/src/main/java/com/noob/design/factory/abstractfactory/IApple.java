@@ -1,6 +1,5 @@
 package com.noob.design.factory.abstractfactory;
 
-public interface IFruit {
+public interface IApple {
     public void eat();
-    public void drop();
 }
