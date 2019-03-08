@@ -1,11 +1,11 @@
 package com.noob.design.factory.method;
 
-import com.noob.design.factory.App;
+import com.noob.design.factory.Apple;
 import com.noob.design.factory.IFruit;
 
-public class AppFactory implements FactoryMethod {
+public class AppleFactory implements FactoryMethod {
     @Override
     public IFruit create() {
-        return new App();
+        return new Apple();
     }
 }

@@ -1,6 +1,5 @@
 package com.noob.design.factory.method;
 
-import com.noob.design.factory.Banana;
 import com.noob.design.factory.IFruit;
 
 public class Test {
@@ -9,7 +8,7 @@ public class Test {
         IFruit banana = factory.create();
         banana.eat();
 
-        FactoryMethod factory1 = new AppFactory();
+        FactoryMethod factory1 = new AppleFactory();
         IFruit app = factory1.create();
         app.eat();
     }
