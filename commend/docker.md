@@ -8,12 +8,14 @@
     3.exit
     4.docker-machine restart default
 ### redis相关
-    启动：
+    创建并启动：
     docker run -p 6379:6379 -d redis:3.2 redis-server --appendonly yes
     进入虚拟机:
     docker-machine ssh default
     连接客户端:
     docker exec -it imageId redis-cli
+    启动redis服务:
+    docker start imagesId
 ### rocketmq相关
     创建容器:
     docker run -d -p 9876:9876 --name rmqnamesrv -e "JAVA_OPT_EXT=-server -Xms256m -Xmx256m -Xmn128m" rocketmq:4.3
