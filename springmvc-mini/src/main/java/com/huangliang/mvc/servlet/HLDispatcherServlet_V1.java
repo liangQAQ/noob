@@ -1,9 +1,9 @@
 package com.huangliang.mvc.servlet;
 
-import com.huangliang.mvc.annotation.HLAutowire;
-import com.huangliang.mvc.annotation.HLController;
-import com.huangliang.mvc.annotation.HLRequestMapping;
-import com.huangliang.mvc.annotation.HLService;
+import com.huangliang.mvc.framework.annotation.HLAutowire;
+import com.huangliang.mvc.framework.annotation.HLController;
+import com.huangliang.mvc.framework.annotation.HLRequestMapping;
+import com.huangliang.mvc.framework.annotation.HLService;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -13,14 +13,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.*;
 
-public class HLDispatcherServlet extends HttpServlet {
+public class HLDispatcherServlet_V1 extends HttpServlet {
 
     //保存所有带实例化的内名
     private List<String> classes = new ArrayList<>();

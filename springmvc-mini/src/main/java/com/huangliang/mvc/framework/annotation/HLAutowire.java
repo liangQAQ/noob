@@ -1,4 +1,4 @@
-package com.huangliang.mvc.annotation;
+package com.huangliang.mvc.framework.annotation;
 
 import java.lang.annotation.*;
 
@@ -6,4 +6,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface HLAutowire {
+    String value() default "";
 }

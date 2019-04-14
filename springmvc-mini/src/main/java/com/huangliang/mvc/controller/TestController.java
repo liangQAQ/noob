@@ -1,8 +1,8 @@
 package com.huangliang.mvc.controller;
 
-import com.huangliang.mvc.annotation.HLAutowire;
-import com.huangliang.mvc.annotation.HLController;
-import com.huangliang.mvc.annotation.HLRequestMapping;
+import com.huangliang.mvc.framework.annotation.HLAutowire;
+import com.huangliang.mvc.framework.annotation.HLController;
+import com.huangliang.mvc.framework.annotation.HLRequestMapping;
 import com.huangliang.mvc.service.TestService;
 
 import javax.servlet.http.HttpServletRequest;

@@ -1,6 +1,6 @@
 package com.huangliang.mvc.service;
 
-import com.huangliang.mvc.annotation.HLService;
+import com.huangliang.mvc.framework.annotation.HLService;
 
 @HLService
 public class TestServiceImpl implements TestService {
