@@ -1,4 +1,4 @@
-package com.huangliang.mvc.framework.beans;
+package com.huangliang.framework.beans;
 
 import lombok.Data;
 //用来存储配置文件中的信息

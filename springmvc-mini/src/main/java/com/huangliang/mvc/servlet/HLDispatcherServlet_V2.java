@@ -1,14 +1,10 @@
 package com.huangliang.mvc.servlet;
 
-import com.huangliang.mvc.framework.annotation.HLAutowire;
-import com.huangliang.mvc.framework.annotation.HLController;
-import com.huangliang.mvc.framework.annotation.HLRequestMapping;
-import com.huangliang.mvc.framework.annotation.HLService;
-import com.huangliang.mvc.framework.context.HLApplicationContext;
-import com.huangliang.mvc.framework.webmvc.HLHandlerAdapter;
-import com.huangliang.mvc.framework.webmvc.HLHandlerMapping;
-import com.huangliang.mvc.framework.webmvc.HLModelAndView;
-import lombok.extern.slf4j.Slf4j;
+import com.huangliang.framework.annotation.HLController;
+import com.huangliang.framework.annotation.HLRequestMapping;
+import com.huangliang.framework.beans.HLBeanDefinition;
+import com.huangliang.framework.context.HLApplicationContext;
+import com.huangliang.framework.webmvc.*;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -17,16 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.URL;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Slf4j
 public class HLDispatcherServlet_V2 extends HttpServlet {
 
     //web.xml配置的内容
@@ -34,18 +25,24 @@ public class HLDispatcherServlet_V2 extends HttpServlet {
 
     private HLApplicationContext context;
 
-    private List<HLHandlerMapping> handlerMappings;
+    private List<HLHandlerMapping> handlerMappings = new ArrayList<>();
 
     private Map<HLHandlerMapping,HLHandlerAdapter> handlerAdapters = new HashMap<HLHandlerMapping,HLHandlerAdapter>();
 
+    private List<HLViewResolver> viewResolvers = new ArrayList<HLViewResolver>();
+
     @Override
-    public void init(ServletConfig config) throws ServletException {
+    public void init(ServletConfig config) {
         //初始化容器
         context = new HLApplicationContext(config.getInitParameter(LOCATION));
-        initStrategies(context);
+        try {
+            initStrategies(context);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    private void initStrategies(HLApplicationContext context) {
+    private void initStrategies(HLApplicationContext context) throws Exception {
         //有九种策略
         // 针对于每个用户请求，都会经过一些处理的策略之后，最终才能有结果输出
         // 每种策略可以自定义干预，但是最终的结果都是一致
@@ -86,8 +83,19 @@ public class HLDispatcherServlet_V2 extends HttpServlet {
         return handlerAdapters.get(handler);
     }
 
-    private void processDispatchResult(HttpServletRequest req, HttpServletResponse resp, HLModelAndView mv) {
-
+    private void processDispatchResult(HttpServletRequest req, HttpServletResponse resp, HLModelAndView mv) throws Exception {
+        //调用 viewResolver 的 resolveView 方法
+        if(null == mv){ return;}
+        if(this.viewResolvers.isEmpty()){ return;}
+        if (this.viewResolvers != null) {
+            for (HLViewResolver viewResolver : this.viewResolvers) {
+                HLView view = viewResolver.resolveViewName(mv.getViewName(), null);
+                if (view != null) {
+                    view.render(mv.getModel(),req,resp);
+                    return;
+                }
+            }
+        }
     }
 
     private HLHandlerMapping getHandler(HttpServletRequest req) {
@@ -108,6 +116,15 @@ public class HLDispatcherServlet_V2 extends HttpServlet {
     }
 
     private void initViewResolvers(HLApplicationContext context) {
+        //在页面敲一个 http://localhost/first.html
+        //解决页面名字和模板文件关联的问题
+        String templateRoot = context.getConfig().getProperty("templateRoot");
+        String templateRootPath =
+                this.getClass().getClassLoader().getResource(templateRoot).getFile();
+        File templateRootDir = new File(templateRootPath);
+        for (File template : templateRootDir.listFiles()) {
+            this.viewResolvers.add(new HLViewResolver(templateRoot));
+        }
     }
 
     private void initRequestToViewNameTranslator(HLApplicationContext context) {
@@ -126,11 +143,12 @@ public class HLDispatcherServlet_V2 extends HttpServlet {
         }
     }
 
-    private void initHandlerMappings(HLApplicationContext context) {
-        String[] beanNames = context.getBeanNames();
-        for(String beanName : beanNames){
-            Object obj = context.getBean(beanName);
-            Class clazz = obj.getClass();
+    private void initHandlerMappings(HLApplicationContext context) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+//        String[] beanNames = context.getBeanNames();
+        List<String> beanNames = context.getBeanNamesList();
+        for(String simpleBeanName : beanNames){
+            Object controller = context.getBean(simpleBeanName);
+            Class clazz = controller.getClass();
             if(!clazz.isAnnotationPresent(HLController.class)){continue;}
             String baseUrl = "";
             if (clazz.isAnnotationPresent(HLRequestMapping.class)) {
@@ -141,11 +159,10 @@ public class HLDispatcherServlet_V2 extends HttpServlet {
             for(Method m : methods){
                 if(!m.isAnnotationPresent(HLRequestMapping.class)){continue;}
                 HLRequestMapping annotation =m.getAnnotation(HLRequestMapping.class);
-                baseUrl  = baseUrl + annotation.value();
                 String regex = ("/" + baseUrl + annotation.value().replaceAll("\\*",
                         ".*")).replaceAll("/+", "/");
                 Pattern pattern = Pattern.compile(regex);
-                this.handlerMappings.add(new HLHandlerMapping(obj,m,pattern));
+                this.handlerMappings.add(new HLHandlerMapping(controller,m,pattern));
                 System.out.println("Mapping: " + regex + " , " + m);
             }
         }

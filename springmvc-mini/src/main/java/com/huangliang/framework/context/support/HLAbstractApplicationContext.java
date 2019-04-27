@@ -1,4 +1,4 @@
-package com.huangliang.mvc.framework.context.support;
+package com.huangliang.framework.context.support;
 
 /**
  * IOC 容器实现的顶层设计

@@ -1,4 +1,4 @@
-package com.huangliang.mvc.framework.annotation;
+package com.huangliang.framework.annotation;
 
 import java.lang.annotation.*;
 

@@ -1,19 +1,18 @@
-package com.huangliang.mvc.framework.context;
+package com.huangliang.framework.context;
 
-import com.huangliang.mvc.framework.annotation.HLAutowire;
-import com.huangliang.mvc.framework.annotation.HLController;
-import com.huangliang.mvc.framework.annotation.HLService;
-import com.huangliang.mvc.framework.beans.HLBeanDefinition;
-import com.huangliang.mvc.framework.beans.config.HLBeanDefinitionReader;
-import com.huangliang.mvc.framework.beans.support.HLDefaultListableBeanFactory;
-import com.huangliang.mvc.framework.context.support.HLAbstractApplicationContext;
-import com.huangliang.mvc.framework.core.HLFactoryBean;
+import com.huangliang.framework.annotation.HLAutowire;
+import com.huangliang.framework.annotation.HLController;
+import com.huangliang.framework.annotation.HLService;
+import com.huangliang.framework.beans.HLBeanDefinition;
+import com.huangliang.framework.beans.HLBeanWrapper;
+import com.huangliang.framework.beans.config.HLBeanDefinitionReader;
+import com.huangliang.framework.beans.support.HLDefaultListableBeanFactory;
+import com.huangliang.framework.core.HLFactoryBean;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 public class HLApplicationContext extends HLDefaultListableBeanFactory implements HLFactoryBean {
 
@@ -21,6 +20,8 @@ public class HLApplicationContext extends HLDefaultListableBeanFactory implement
     private String[] configLoactions;
     //配置文件定位对象
     private HLBeanDefinitionReader reader;
+
+    private Properties config;
 
     //用来保证注册式单例的容器
     private Map<String,Object> singletonBeanCacheMap = new HashMap<String, Object>();
@@ -33,20 +34,27 @@ public class HLApplicationContext extends HLDefaultListableBeanFactory implement
         refresh();
     }
 
+
     @Override
     public void refresh(){
         //1.定位配置文件
         reader = new HLBeanDefinitionReader(configLoactions);
+        config = reader.getProperties();
         //2.加载对象把它们封装成 BeanDefinition
         List<HLBeanDefinition> beanDefinitions = reader.loadBeanDefinitions();
-        //3、注册，把配置信息放到容器里面(伪 IOC 容器)
         try {
+            //3、注册，把配置信息放到容器里面(伪 IOC 容器)
             doRegisterBeanDefinition(beanDefinitions);
+            //4、把不是延时加载的类，有提前初始化
+            doAutowrited();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //4、把不是延时加载的类，有提前初始化
-        doAutowrited();
+        System.out.println("实例化一次");
+    }
+
+    public List getBeanNamesList(){
+        return this.beanDefinitionMap.keySet().stream().collect(Collectors.toList());
     }
 
     private void doAutowrited() {
@@ -76,6 +84,10 @@ public class HLApplicationContext extends HLDefaultListableBeanFactory implement
     public Object getBean(String beanName) {
         //实例化对象
         Object instants = instantiateBean(beanDefinitionMap.get(beanName));
+        if(instants==null){
+            return null;
+        }
+        beanWrapperMap.put(beanName,new HLBeanWrapper(instants));
         //DI依赖注入
         populateBean(beanName,instants);
         return instants;
@@ -92,11 +104,20 @@ public class HLApplicationContext extends HLDefaultListableBeanFactory implement
             HLAutowire autowired = field.getAnnotation(HLAutowire.class);
             String autowiredBeanName = autowired.value().trim();
             if("".equals(autowiredBeanName)){
-                autowiredBeanName = field.getType().getName();
+                autowiredBeanName = field.getName();
+            }
+            Object fieldValue = null;
+            HLBeanWrapper wrapper = this.beanWrapperMap.get(autowiredBeanName);
+            if(wrapper!=null){
+                fieldValue = wrapper.getWrappedInstance();
+            }
+            if(fieldValue == null){
+                //如果所需属性为空，则递归调用getBean实例化所需的属性
+                fieldValue = getBean(autowiredBeanName);
             }
             field.setAccessible(true);
             try {
-                field.set(instants,this.beanWrapperMap.get(autowiredBeanName).getWrappedInstance());
+                field.set(instants,fieldValue);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
@@ -124,4 +145,11 @@ public class HLApplicationContext extends HLDefaultListableBeanFactory implement
         }
     }
 
+    public Properties getConfig() {
+        return config;
+    }
+
+    public void setConfig(Properties config) {
+        this.config = config;
+    }
 }

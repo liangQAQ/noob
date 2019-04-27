@@ -1,4 +1,4 @@
-package com.huangliang.mvc.framework.webmvc;
+package com.huangliang.framework.webmvc;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

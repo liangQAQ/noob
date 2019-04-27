@@ -1,6 +1,6 @@
-package com.huangliang.mvc.framework.webmvc;
+package com.huangliang.framework.webmvc;
 
-import com.huangliang.mvc.framework.annotation.HLRequestParam;
+import com.huangliang.framework.annotation.HLRequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -68,8 +68,8 @@ public class HLHandlerAdapter {
             paramValues[respIndex] = resp;
         }
 //4、从 handler 中取出 controller、method，然后利用反射机制进行调用
-        //Object result = method.invoke(mapping.getController(),);
-        return null;
+        Object result = method.invoke(handlerMapping.getController(),paramValues);
+        return (HLModelAndView)result;
     }
 
     private Object caseStringValue(String value,Class<?> clazz){

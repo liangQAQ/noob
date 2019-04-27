@@ -1,4 +1,4 @@
-package com.huangliang.mvc.framework.core;
+package com.huangliang.framework.core;
 
 public interface HLFactoryBean {
     /**
