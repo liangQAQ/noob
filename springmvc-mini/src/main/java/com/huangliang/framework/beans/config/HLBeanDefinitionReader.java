@@ -1,7 +1,6 @@
-package com.huangliang.mvc.framework.beans.config;
+package com.huangliang.framework.beans.config;
 
-import com.huangliang.mvc.framework.beans.HLBeanDefinition;
-import com.sun.org.apache.bcel.internal.generic.RETURN;
+import com.huangliang.framework.beans.HLBeanDefinition;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,6 +30,14 @@ public class HLBeanDefinitionReader {
         }
         //扫描当前目录下的所有文件
         scanPackageFiles(properties.getProperty(SCAN_PACKAGE));
+    }
+
+    public Properties getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Properties properties) {
+        this.properties = properties;
     }
 
     //扫描当前目录下的所有文件
@@ -69,7 +76,7 @@ public class HLBeanDefinitionReader {
 
             Class<?> [] interfaces = clazz.getInterfaces();
             for (Class<?> i : interfaces) {
-                result.add(createBeanDefinition(i.getName(),clazz.getName()));
+                result.add(createBeanDefinition(toLowerFirstCase(i.getSimpleName()),clazz.getName()));
             }
         }
         return result;

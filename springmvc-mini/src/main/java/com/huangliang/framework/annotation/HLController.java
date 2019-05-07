@@ -1,9 +1,9 @@
-package com.huangliang.mvc.framework.annotation;
+package com.huangliang.framework.annotation;
 
 import java.lang.annotation.*;
 
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface HLService {
+public @interface HLController {
 }

@@ -1,7 +1,7 @@
-package com.huangliang.mvc.framework.beans.support;
+package com.huangliang.framework.beans.support;
 
-import com.huangliang.mvc.framework.beans.HLBeanDefinition;
-import com.huangliang.mvc.framework.context.support.HLAbstractApplicationContext;
+import com.huangliang.framework.context.support.HLAbstractApplicationContext;
+import com.huangliang.framework.beans.HLBeanDefinition;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
