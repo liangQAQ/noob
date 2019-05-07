@@ -11,7 +11,7 @@
     chowm -R cosee:ftp *   修改文件所属权限           
 ### 系统相关
     ifconfig   查看网卡
-    tcpdump -i eth0 port 8080 -s 0 -v -w 1.cap     linux 抓取eth0网卡端口8080的数据包
+    tcpdump -i eth0 port 8080 -s 0 -v -w 1.cap  抓取eth0网卡端口8080的数据包
     echo 3 > /proc/sys/vm/drop_caches  立即清理系统内存缓存
-    tar -zcvf archive_name.tar.gz filename         压缩文件
-    tar -zxvf archive_name.tar.gz                      解压缩文件
+    tar -zcvf archive_name.tar.gz filename 压缩文件
+    tar -zxvf archive_name.tar.gz  解压缩文件
