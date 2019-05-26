@@ -9,6 +9,7 @@ public class SaleTicket2 {
     public static void sell(){
         if (count.get() > 0) {
             try {
+                System.out.println("sss");
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -16,6 +17,7 @@ public class SaleTicket2 {
             int tmp;
             if ((tmp = count.get()) > 0 && count.compareAndSet(tmp, tmp-1)) {
                 soldCount.getAndAdd(1);
+
                 System.out.println("剩余票" + count.get());
             }
         }
