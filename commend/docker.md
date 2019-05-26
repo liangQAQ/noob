@@ -2,6 +2,12 @@
     docker images ------------查看所有镜像
     docker ps ----------------查看所有进程
     docker ps -a -------------查看所有容器
+    docker run -d -it --name static cosee:innertest /bin/bash 
+                --------------将cosee:innertest版本的应用以cosee112233为名启动(-d去掉看日志)
+    docker exec -it cosee112233 /bin/bash 
+                --------------进入名字为cosee112233的容器
+    docker rmi ...------------删除imageId为...的镜像
+    docker rm ...-------------删除...的容器
 ### 设置docker加速地址为阿里云仓库
     1.docker-machine ssh default
     2.sudo sed -i "s|EXTRA_ARGS='|EXTRA_ARGS='--registry-mirror=https://g23j5rvs.mirror.aliyuncs.com |g" /var/lib/boot2docker/profile
