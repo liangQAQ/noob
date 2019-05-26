@@ -18,22 +18,17 @@ public class TestController {
     private TestService testService;
 
     @HLRequestMapping(value = "/a1.json")
-    public String a1Json(HttpServletRequest request, HttpServletResponse response){
+    public HLModelAndView a1Json(HttpServletRequest request, HttpServletResponse response){
         try {
             response.getWriter().write("sssss");
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "{\"sss\":\"ddd\"}";
+        return null;
     }
 
     @HLRequestMapping(value = "/a1.html")
-    public HLModelAndView a1Html(HttpServletRequest request, HttpServletResponse response){
-        try {
-            response.getWriter().write("sssss");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public HLModelAndView a1Html(String name,HttpServletRequest request, HttpServletResponse response){
         return new HLModelAndView("a1",null);
     }
 }

@@ -3,6 +3,7 @@ package com.huangliang.framework.context;
 import com.huangliang.framework.annotation.HLAutowire;
 import com.huangliang.framework.annotation.HLController;
 import com.huangliang.framework.annotation.HLService;
+import com.huangliang.framework.aop.*;
 import com.huangliang.framework.beans.HLBeanDefinition;
 import com.huangliang.framework.beans.HLBeanWrapper;
 import com.huangliang.framework.beans.config.HLBeanDefinitionReader;
@@ -133,6 +134,14 @@ public class HLApplicationContext extends HLDefaultListableBeanFactory implement
             Object instants = null;
             try {
                 instants = Class.forName(beanDefinition.getBeanClassName()).newInstance();
+                //判断该实例化的类是aop配置扫描的包下的类
+                // 如果是，则用代理对象覆盖原对象
+                HLAdvisedSupport config = instantionAopConfig(beanDefinition);
+                config.setTargetClass(instants.getClass());
+                config.setTarget(instants);
+                if(config.pointCutMatch()) {
+                    instants = createProxy(config).getProxy();
+                }
             } catch (InstantiationException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {
@@ -143,6 +152,29 @@ public class HLApplicationContext extends HLDefaultListableBeanFactory implement
             singletonBeanCacheMap.put(simpleClassName,instants);
             return instants;
         }
+    }
+
+    private HLAopProxy createProxy(HLAdvisedSupport config) {
+        HLAopProxy proxy = null;
+        if(config.getTargetClass().getInterfaces().length>0){
+            //如果实现了接口，则使用jdk动态代理
+            proxy = new HLJdkAopProxy(config);
+        }else{
+            //如果没有实现接口，则使用cglib代理(暂时没实现)
+            proxy = new HLCglibAopProxy();
+        }
+        return proxy;
+    }
+
+    private HLAdvisedSupport instantionAopConfig(HLBeanDefinition beanDefinition) {
+        HLAopConfig config = new HLAopConfig();
+        config.setPointCut(reader.getProperties().getProperty("pointCut"));
+        config.setAspectClass(reader.getProperties().getProperty("aspectClass"));
+        config.setAspectBefore(reader.getProperties().getProperty("aspectBefore"));
+        config.setAspectAfter(reader.getProperties().getProperty("aspectAfter"));
+        config.setAspectAfterThrow(reader.getProperties().getProperty("aspectAfterThrow"));
+        config.setAspectAfterThrowingName(reader.getProperties().getProperty("aspectAfterThrowingName"));
+        return new HLAdvisedSupport(config);
     }
 
     public Properties getConfig() {
