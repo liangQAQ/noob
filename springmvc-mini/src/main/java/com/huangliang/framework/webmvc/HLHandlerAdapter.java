@@ -55,8 +55,8 @@ public class HLHandlerAdapter {
                     Arrays.toString(param.getValue()).replaceAll("\\[|\\]","").replaceAll("\\s","");
             if(!paramMapping.containsKey(param.getKey())){continue;}
             int index = paramMapping.get(param.getKey());
-//因为页面上传过来的值都是 String 类型的，而在方法中定义的类型是千变万化的
-//要针对我们传过来的参数进行类型转换
+        //因为页面上传过来的值都是 String 类型的，而在方法中定义的类型是千变万化的
+        //要针对我们传过来的参数进行类型转换
             paramValues[index] = caseStringValue(value,paramTypes[index]);
         }
         if(paramMapping.containsKey(HttpServletRequest.class.getName())) {
@@ -67,7 +67,7 @@ public class HLHandlerAdapter {
             int respIndex = paramMapping.get(HttpServletResponse.class.getName());
             paramValues[respIndex] = resp;
         }
-//4、从 handler 中取出 controller、method，然后利用反射机制进行调用
+        //4、从 handler 中取出 controller、method，然后利用反射机制进行调用
         Object result = method.invoke(handlerMapping.getController(),paramValues);
         return (HLModelAndView)result;
     }
