@@ -14,4 +14,10 @@ public class NBSqlSession {
         return configuration.getMapper(clazz,this);
     }
 
+    public Object selectOne(String statementId, Object arg) {
+        //通过statementId找到sql语句
+        String sql = configuration.sqlMappings.getString(statementId);
+        return executor.query(sql,arg);
+
+    }
 }
