@@ -8,12 +8,12 @@ public class NBConfiguration {
     public static final ResourceBundle sqlMappings ;
 
     static{
-        sqlMappings = ResourceBundle.getBundle ("mesql");
+        sqlMappings = ResourceBundle.getBundle("mesql");
     }
 
     public <T> T getMapper(Class clazz,NBSqlSession sqlSession) {
         return (T) Proxy.newProxyInstance(
-                clazz.getClassLoader(),clazz.getClass().getInterfaces(),new NBMapperProxy(sqlSession));
+                clazz.getClassLoader(),new Class[]{clazz},new NBMapperProxy(sqlSession));
     }
 
 }

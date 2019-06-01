@@ -1,38 +1,58 @@
 package com.huangliang.nbbatis;
 
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import com.huangliang.mapper.Student;
+
+import java.sql.*;
 
 public class NBExecutor {
 
     public <T> T query(String sql, Object paramater) {
-        sql = String.format(sql, paramater);
-        try {
-            return (T) getStateMent().executeQuery(sql);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private Statement getStateMent() {
-        Connection conn = null;// conn用于连接数据库
-        Statement stmt = null;// stmt用于发送sql语句到数据库并执行sql语句
-        String connectionString = "jdbc:mysql://10.9.216.1:3306/test?user=root&password=coship&useUnicode=true&amp;characterEncoding=UTF-8";
+        Connection conn = null;
+        Statement stmt = null;
+        Student student = new Student();
 
         try {
-            // 将数据驱动程序类加载到内存中
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            // 注册 JDBC 驱动
+            Class.forName("com.mysql.jdbc.Driver");
 
-            // 通过驱动程序管理器DriverManager获取连接对象conn，conn连接的服务器和数据库信息在connectionString
-            conn = DriverManager.getConnection(connectionString);
+            // 打开连接
+            conn = DriverManager.getConnection("jdbc:mysql://192.168.99.100:3306/test", "root", "123456");
+
+            // 执行查询
             stmt = conn.createStatement();
+
+            ResultSet rs = stmt.executeQuery(String.format(sql, paramater));
+
+            // 获取结果集
+            while (rs.next()) {
+                Integer id = rs.getInt("id");
+                String name = rs.getString("name");
+                Integer age = rs.getInt("age");
+                student.setId(id);
+                student.setName(name);
+                student.setAge(age);
+            }
+
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException se) {
+            se.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null) stmt.close();
+            } catch (SQLException se2) {
+            }
+            try {
+                if (conn != null) conn.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
         }
-        return stmt;
+        return (T)student;
     }
+
 }

@@ -1,6 +1,6 @@
 package com.huangliang;
 
-import com.huangliang.entity.Student;
+import com.huangliang.mapper.Student;
 import com.huangliang.mapper.StudentMapper;
 import com.huangliang.nbbatis.NBConfiguration;
 import com.huangliang.nbbatis.NBExecutor;
