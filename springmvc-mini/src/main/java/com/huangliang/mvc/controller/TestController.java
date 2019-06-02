@@ -20,6 +20,7 @@ public class TestController {
     @HLRequestMapping(value = "/a1.json")
     public HLModelAndView a1Json(HttpServletRequest request, HttpServletResponse response){
         try {
+            testService.print();
             response.getWriter().write("sssss");
         } catch (IOException e) {
             e.printStackTrace();

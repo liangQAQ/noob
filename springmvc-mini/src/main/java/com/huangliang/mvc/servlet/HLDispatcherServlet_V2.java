@@ -33,6 +33,7 @@ public class HLDispatcherServlet_V2 extends HttpServlet {
 
     @Override
     public void init(ServletConfig config) {
+        System.out.println("初始化容器");
         //初始化容器
         context = new HLApplicationContext(config.getInitParameter(LOCATION));
         try {

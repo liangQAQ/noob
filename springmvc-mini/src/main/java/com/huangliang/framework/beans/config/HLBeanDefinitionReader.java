@@ -22,7 +22,8 @@ public class HLBeanDefinitionReader {
     private final String SCAN_PACKAGE = "scanPackage";
 
     public HLBeanDefinitionReader(String... str){
-        InputStream is = this.getClass().getClassLoader().getResourceAsStream(str[0]);
+        File file = new File("src/"+str[0].replace("classpath:",""));
+        InputStream is = this.getClass().getClassLoader().getResourceAsStream(str[0].replace("classpath:",""));
         try {
             properties.load(is);
         } catch (IOException e) {
