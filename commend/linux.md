@@ -1,5 +1,5 @@
 ### java相关
-    jstat -gcutil pid interval 查看young old空间和gc执行情况
+    jstat -gcutil pid interval 查看young old空间和gc执行情况，pid进程号，interval刷新时间
     jmap -heap pid 可查看对应进程jvm内存使用情况
     jmap -histo pid 可查看对应进程jvm内存中对象数量
     jmap -dump:format=b,file=heap_dump.hprof pid 可dump出hprof文件提供分析
