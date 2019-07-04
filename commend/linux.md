@@ -5,8 +5,8 @@
     jmap -dump:format=b,file=heap_dump.hprof pid 可dump出hprof文件提供分析
     jstack -l pid >> 1.log  将进程pid中的线程栈打印至1.log文件中
     top -H -p pid 查看对应pid进程的哪个线程tid占用CPU过高
-    printf "%x\n" tid 将10进制tid转化为16进制TID
-    jstack pid | grep TID -A 30 查看pid进程中Tid的栈信息30前行
+    printf "%x\n" tid 将10进制tid转化为16进制tID
+    jstack pid | grep tid -A 30 查看pid进程中tid的栈信息30前行
     
 ### FTP相关
     service vsftpd start|stop|restart ftp相关命令             
