@@ -15,6 +15,7 @@
     chmod -R 755 abcde  分配读写权限            
     chowm -R abcde:ftp *   修改文件所属权限           
 ### 系统相关
+    lsof -i:3306 | grep '10.9.218.6'| wc -l  查看10.9.218.6服务器占用3306端口的连接个数
     ifconfig   查看网卡
     tcpdump -i eth0 port 8080 -s 0 -v -w 1.cap  抓取eth0网卡端口8080的数据包
     echo 3 > /proc/sys/vm/drop_caches  立即清理系统内存缓存
