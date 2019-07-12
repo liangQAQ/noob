@@ -26,3 +26,9 @@
     创建容器:
     docker run -d -p 9876:9876 --name rmqnamesrv -e "JAVA_OPT_EXT=-server -Xms256m -Xmx256m -Xmn128m" rocketmq:4.3
     docker run -d -p 9876:9876 --name rmqserver  foxiswho/rocketmq:server
+### zookeeper相关
+    docker pull zookeeper  ---------------拉取镜像
+    docker run --name hl-zookeeper -p 2181:2181 --restart always -d zookeeper 
+                           ----------以hl-zookeeper启动镜像映射出2181端口
+    docker run -it --rm --link hl-zookeeper:zookeeper zookeeper zkCli.sh -server zookeeper           
+                           ----------client连接到zookeeper
