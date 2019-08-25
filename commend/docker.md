@@ -9,10 +9,10 @@
     docker rmi ...------------删除imageId为...的镜像
     docker rm ...-------------删除...的容器
 ### 设置docker加速地址为阿里云仓库
-    1.docker-machine ssh default
-    2.sudo sed -i "s|EXTRA_ARGS='|EXTRA_ARGS='--registry-mirror=https://g23j5rvs.mirror.aliyuncs.com |g" /var/lib/boot2docker/profile
-    3.exit
-    4.docker-machine restart default
+    1.打开终端执行命令：docker-machine ssh
+    2.修改配置文件：sudo vi /var/lib/boot2docker/profile在--label provider=virtualbox的下一行添加：--registry-mirror http://724ffc86.m.daocloud.io
+    3.重启docker docker-machine.exe restart
+
 ### redis相关
     创建并启动：
     docker run -p 6379:6379 -d redis:3.2 redis-server --appendonly yes
