@@ -1,6 +1,8 @@
 package com.huangliang.concurrent;
 
 import java.util.Random;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -45,5 +47,9 @@ public class BlockQueueDemo {
         new Thread(new Waiter()).start();
         new Thread(new Waiter()).start();
         new Thread(new Worker()).start();
+        Executors.newSingleThreadExecutor();
+        Executors.newFixedThreadPool(3);
+        Executors.newCachedThreadPool();
+        Executors.newScheduledThreadPool(4);
     }
 }
