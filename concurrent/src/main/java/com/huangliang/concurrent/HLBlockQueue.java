@@ -36,9 +36,9 @@ public class HLBlockQueue<T> {
             lock.lock();
             if (list.size() >= queueSize) {
                 //阻塞线程
-                System.out.println(Thread.currentThread().getName()+":put await...");
+                System.out.println(Thread.currentThread().getName() + ":put await...");
                 putCondition.await();
-                System.out.println(Thread.currentThread().getName()+":put out of await...");
+                System.out.println(Thread.currentThread().getName() + ":put out of await...");
                 return put(t);
             }
             result = list.add(t);
@@ -61,14 +61,14 @@ public class HLBlockQueue<T> {
                 return t;
             }
             //没有就阻塞
-            System.out.println(Thread.currentThread().getName()+":take await...");
+            System.out.println(Thread.currentThread().getName() + ":take await...");
             takeCondition.await();
-            System.out.println(Thread.currentThread().getName()+":take out of await...");
+            System.out.println(Thread.currentThread().getName() + ":take out of await...");
             return take();
         } catch (InterruptedException e) {
             e.printStackTrace();
             return null;
-        }finally {
+        } finally {
             lock.unlock();
         }
     }

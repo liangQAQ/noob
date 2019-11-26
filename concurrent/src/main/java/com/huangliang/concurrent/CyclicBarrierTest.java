@@ -14,24 +14,21 @@ public class CyclicBarrierTest {
 
         ExecutorService exec = Executors.newCachedThreadPool();
 
-        for (int i = 0; i < 5; i++) {
-            if(i==2){
+        for (int i = 0; i < 7; i++) {
+            if (i == 2) {
                 cyclicBarrier.reset();
             }
             exec.execute(() -> {
                 try {
-                    System.out.println("start Thread");
+                    System.out.println("start Thread,cyclicBarrier await");
                     cyclicBarrier.await();
-                    System.out.println("Thread:"+Thread.currentThread().getName()+"---"+"date:"+System.currentTimeMillis());
+                    System.out.println("Thread:" + Thread.currentThread().getName() + "---" + "date:" + System.currentTimeMillis());
                 } catch (Exception e) {
-//                    log.error("exception", e);
                     System.out.println(11);
                 } finally {
                 }
             });
         }
-//        countDownLatch.await(10, TimeUnit.MILLISECONDS);
         System.out.println("finish");
-//        exec.shutdown();
     }
 }

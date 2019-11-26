@@ -6,7 +6,7 @@ public class SaleTicket2 {
     static AtomicInteger count = new AtomicInteger(51);
     static AtomicInteger soldCount = new AtomicInteger(0);
 
-    public static void sell(){
+    public static void sell() {
         if (count.get() > 0) {
             try {
                 System.out.println("sss");
@@ -15,7 +15,7 @@ public class SaleTicket2 {
                 e.printStackTrace();
             }
             int tmp;
-            if ((tmp = count.get()) > 0 && count.compareAndSet(tmp, tmp-1)) {
+            if ((tmp = count.get()) > 0 && count.compareAndSet(tmp, tmp - 1)) {
                 soldCount.getAndAdd(1);
 
                 System.out.println("剩余票" + count.get());

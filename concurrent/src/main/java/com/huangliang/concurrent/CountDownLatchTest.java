@@ -21,7 +21,7 @@ public class CountDownLatchTest {
                     System.out.println("start Thread");
                     //
                     countDownLatch.await();
-                    System.out.println("Thread:"+Thread.currentThread().getName()+"---"+"date:"+System.currentTimeMillis());
+                    System.out.println("Thread:" + Thread.currentThread().getName() + "---" + "date:" + System.currentTimeMillis());
                 } catch (Exception e) {
 //                    log.error("exception", e);
                     System.out.println(11);

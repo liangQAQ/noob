@@ -9,19 +9,19 @@ import java.util.Map;
  */
 public class RedisLRUTest {
 
-    private static Map map = new LinkedHashMap<String,String>();
+    private static Map map = new LinkedHashMap<String, String>();
 
-    private static void getKey(String key){
-        if(map.containsKey(key)){
+    private static void getKey(String key) {
+        if (map.containsKey(key)) {
             map.remove(key);
         }
-        map.put(key,"");
+        map.put(key, "");
     }
 
-    private static void remove(){
+    private static void remove() {
         String key = null;
         Iterator iterator = map.keySet().iterator();
-        if(iterator.hasNext()){
+        if (iterator.hasNext()) {
             key = iterator.next().toString();
         }
         map.remove(key);

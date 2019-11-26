@@ -12,7 +12,7 @@ public class FutureTaskTest {
         System.out.println(ft.get());
     }
 
-    static class call implements Callable{
+    static class call implements Callable {
         public String call() throws Exception {
             Thread.sleep(3000);
             return "calllll";

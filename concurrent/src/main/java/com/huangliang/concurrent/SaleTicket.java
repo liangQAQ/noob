@@ -12,18 +12,18 @@ public class SaleTicket {
     private static void sale() throws InterruptedException {
         //卖一张票需要1秒钟
         Thread.sleep(1000);
-        if(count.get()>0){
+        if (count.get() > 0) {
             Thread.sleep(50);
             count.decrementAndGet();
-            System.out.println("卖出一张票，剩余:"+count);
+            System.out.println("卖出一张票，剩余:" + count);
         }
     }
 
-    public static void muti(){
-        Thread sale = new Thread(new Runnable(){
+    public static void muti() {
+        Thread sale = new Thread(new Runnable() {
             public void run() {
                 try {
-                    while(count.get()>0){
+                    while (count.get() > 0) {
                         try {
                             sale();
                         } catch (InterruptedException e) {
@@ -45,7 +45,7 @@ public class SaleTicket {
         t3.start();
         t4.start();
         t5.start();
-        while(count.get()>0){
+        while (count.get() > 0) {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -58,19 +58,19 @@ public class SaleTicket {
         System.out.println("开始卖票");
         Long start = System.currentTimeMillis();
         muti();
-        System.out.println("卖完票总耗时:"+(System.currentTimeMillis()-start));
+        System.out.println("卖完票总耗时:" + (System.currentTimeMillis() - start));
     }
 
-    public static void single(){
+    public static void single() {
         System.out.println("开始卖票");
         Long start = System.currentTimeMillis();
-        while(count.get()>0){
+        while (count.get() > 0) {
             try {
                 sale();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        System.out.println("卖完票总耗时:"+(System.currentTimeMillis()-start));
+        System.out.println("卖完票总耗时:" + (System.currentTimeMillis() - start));
     }
 }

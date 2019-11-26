@@ -1,6 +1,6 @@
 package com.huangliang.concurrent;
 
-public class SynchronizedDemo implements Runnable{
+public class SynchronizedDemo implements Runnable {
     int x = 100;
 
     public synchronized void m1() {
@@ -21,13 +21,15 @@ public class SynchronizedDemo implements Runnable{
         }
         x = 2000;
     }
+
     public static void main(String[] args) throws InterruptedException {
         SynchronizedDemo sd = new SynchronizedDemo();
-        new Thread(()->sd.m1()).start();
-        new Thread(()->sd.m2()).start();
+        new Thread(() -> sd.m1()).start();
+        new Thread(() -> sd.m2()).start();
         sd.m2();
         System.out.println("Main x=" + sd.x);
     }
+
     @Override
     public void run() {
         m1();

@@ -12,11 +12,11 @@ public class ReentranLockTest {
 
     public static void main(String[] args) {
 
-        for(int i=0;i<2;i++){
+        for (int i = 0; i < 2; i++) {
 //            lock = new ReentrantLock();
             new Thread(new Runnable() {
                 public void run() {
-                    for(int i=0;i<100;i++) {
+                    for (int i = 0; i < 100; i++) {
                         enterLock();
                     }
                 }
@@ -32,10 +32,10 @@ public class ReentranLockTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("count:"+count);
+        System.out.println("count:" + count);
     }
 
-    private static void enterLock(){
+    private static void enterLock() {
 //        lock.lock();
         try {
             condition.await();

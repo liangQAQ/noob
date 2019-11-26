@@ -13,27 +13,28 @@ public class BlockQueueDemo {
 
     public static LinkedBlockingQueue<String> food = new LinkedBlockingQueue<String>();
 
-    public static String[] foodArray = new String[]{"青椒肉丝","香干肉丝","榨菜肉丝","茄子肉沫"};
+    public static String[] foodArray = new String[]{"青椒肉丝", "香干肉丝", "榨菜肉丝", "茄子肉沫"};
 
-    static class Waiter implements Runnable{
+    static class Waiter implements Runnable {
         public void run() {
             try {
-                while(true){
+                while (true) {
                     Thread.sleep(500);
-                    System.out.println(Thread.currentThread().getName()+"取走了:"+food.take());
+                    System.out.println(Thread.currentThread().getName() + "取走了:" + food.take());
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
     }
-    static class Worker implements Runnable{
+
+    static class Worker implements Runnable {
         public void run() {
             try {
-                while (true){
+                while (true) {
                     String foods = foodArray[new Random().nextInt(4)];
                     food.put(foods);
-                    System.out.println(Thread.currentThread().getName()+"做出了:"+foods);
+                    System.out.println(Thread.currentThread().getName() + "做出了:" + foods);
                     Thread.sleep(2000);
                 }
             } catch (InterruptedException e) {
