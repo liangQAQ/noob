@@ -1,9 +1,12 @@
 package com.huangliang.concurrent;
 
-import java.util.Random;
-
 public class ThreadTest {
     public static void main(String[] args) {
-        System.out.println(new Random().nextInt(5000));
+
+        Integer a = 1;
+        Integer b = 3;
+        double c = (double) Math.round(((double)a/b) * 100) / 100;
+
+        System.out.println(c);
     }
 }

@@ -9,7 +9,9 @@ public class FutureTaskTest {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         FutureTask ft = new FutureTask(new call());
         new Thread(ft).start();
+        System.out.println(111);
         System.out.println(ft.get());
+        System.out.println(222);
     }
 
     static class call implements Callable {

@@ -12,7 +12,9 @@ public class Hungry implements Serializable {
     //static 在类加载的时候初始化
     public final static Hungry hungry = new Hungry();
 
-    private Hungry(){}
+    private Hungry(){
+        System.out.println("private hungry");
+    }
 
     public static Hungry getInstants(){
 
