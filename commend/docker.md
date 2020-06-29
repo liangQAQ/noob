@@ -2,17 +2,14 @@
     docker images ------------查看所有镜像
     docker ps ----------------查看所有进程
     docker ps -a -------------查看所有容器
-    docker run -d -it --name static cosee:innertest /bin/bash 
-                --------------将cosee:innertest版本的应用以cosee112233为名启动(-d去掉看日志)
+    docker run -d --name test-tomcat -p 8080:8080 882487b8be1d
+                --------------将imageId=882487b8be1d的应用以test-tomcat为名启动(-d后台，-p映射宿主机和创建出来的docker容器端口)
+    docker logs CONTAINER_ID 
+                --------查看CONTAINER_ID的容器的日志
     docker exec -it cosee112233 /bin/bash 
                 --------------进入名字为cosee112233的容器
     docker rmi ...------------删除imageId为...的镜像
     docker rm ...-------------删除...的容器
-### 设置docker加速地址为阿里云仓库
-    1.打开终端执行命令：docker-machine ssh
-    2.修改配置文件：sudo vi /var/lib/boot2docker/profile在--label provider=virtualbox的下一行添加：--registry-mirror http://724ffc86.m.daocloud.io
-    3.重启docker docker-machine.exe restart
-
 ### redis相关
     创建并启动：
     docker run -p 6379:6379 -d redis:3.2 redis-server --appendonly yes
